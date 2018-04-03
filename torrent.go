@@ -47,7 +47,7 @@ const SHA1Size = 40
 
 //Decode byte-array of torrent file into TorrentMeta struct
 func TorrentDecode(b []byte) *TorrentMeta {
-	obj := TorrentRawDecode(b)
+	obj := RawDecode(b)
 
 	var root TorrentMeta
 	/*Start Getting Parent Torrent Data*/
@@ -117,15 +117,15 @@ func TorrentDecode(b []byte) *TorrentMeta {
 	h := sha1.New()
 	fmt.Fprint(h, sobj.BEncodedDictionary())
 	root.Tracker = TrackerData{
-		InfoHash: fmt.Sprintf("% x", h.Sum(nil)),
+		InfoHash: fmt.Sprintf("%s", h.Sum(nil)),
 	}
 
 	root.Info = info
 	return &root
 }
 
-//Decode byte-array of torrent file into BEncode Dictionary Interface(BDictionary)
-func TorrentRawDecode(b []byte) *BDictionary {
+//Decode byte-array into BEncode Dictionary Interface(BDictionary)
+func RawDecode(b []byte) *BDictionary {
 	obj, _ := AsBDictionary(b)
 	return obj
 }
