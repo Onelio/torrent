@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"encoding/json"
 	"io/ioutil"
-	"net/url"
 )
 
 func TestString() {
