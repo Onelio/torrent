@@ -43,6 +43,6 @@ func TestRecMaps() {
 func TestTorrent() {
 	raw, _ := ioutil.ReadFile("leaves.torrent")
 	torrent := TorrentDecode(raw)
-	fmt.Println(url.PathEscape(torrent.Tracker.InfoHash))
+	fmt.Println(torrent.Tracker.InfoHash)
 	torrent.PrintAsJSON()
 }

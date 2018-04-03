@@ -6,6 +6,7 @@ import (
 	"log"
 	"time"
 	"crypto/sha1"
+	"net/url"
 )
 
 //Contains all the info about the torrent file
@@ -117,7 +118,7 @@ func TorrentDecode(b []byte) *TorrentMeta {
 	h := sha1.New()
 	fmt.Fprint(h, sobj.BEncodedDictionary())
 	root.Tracker = TrackerData{
-		InfoHash: fmt.Sprintf("%s", h.Sum(nil)),
+		InfoHash: url.PathEscape(fmt.Sprintf("%s", h.Sum(nil))),
 	}
 
 	root.Info = info
