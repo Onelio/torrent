@@ -26,7 +26,6 @@ type TorrentInfo struct {
 
 //Contains all the meta-file data from the original torrent file
 type TorrentMeta struct {
-	Announce		string			`json:"announce"`
 	AnnounceList	[]string		`json:"announce-list"`
 	CreationDate 	time.Time		`json:"creation date"`
 	Encoding		string			`json:"encoding"`
@@ -53,11 +52,14 @@ func TorrentDecode(b []byte) *TorrentMeta {
 	var root TorrentMeta
 	/*Start Getting Parent Torrent Data*/
 	if belem, ok := obj.dictionary["announce"]; ok {
-		root.Announce = belem.(*BString).String()
+		root.AnnounceList = append(root.AnnounceList, belem.(*BString).String())
 	}
 	if belem, ok := obj.dictionary["announce-list"]; ok {
 		for _, elem := range *belem.(*BList) {
-			root.AnnounceList = append(root.AnnounceList, (*elem.(*BList))[0].(*BString).String())
+			value := (*elem.(*BList))[0].(*BString).String()
+			if value != root.AnnounceList[0] { //Prevent duplicated with Announce_1
+				root.AnnounceList = append(root.AnnounceList, value)
+			}
 		}
 	}
 	if belem, ok := obj.dictionary["creation date"]; ok {
